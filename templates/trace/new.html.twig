@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Trace{% endblock %}
+
+{% block body %}
+    <h1>Create new Trace</h1>
+
+    {{ include('trace/_form.html.twig') }}
+
+    <a href="{{ path('app_trace_index') }}">back to list</a>
+{% endblock %}

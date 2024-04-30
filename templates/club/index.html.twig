@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Club index{% endblock %}
+
+{% block body %}
+      <div class="card">
+            <div class="card-header">
+                <h4>LISTE DES CLUBS</h4>
+            </div>
+            <div class="card-body">
+
+                <table class="table table-stripped"  id="dataTableExample" >
+                    <thead>
+                        <tr>
+                            <th>Logo</th>
+                            <th>Nom (abrev)</th>
+                            <th>Responsable</th>
+                            <th>Ligue</th>
+                            <th>Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for club in clubs %}
+                            <tr>
+                                <td><img src="{{ asset('uploads/logos/' ~ club.logo) }}" alt="logo" width="35"/></td>
+                                <td>{{club.nom}}&nbsp;({{club.abreviation}})</td>
+                                <td>{{club.user}}</td>
+                                <td><a href="{{ path('app_ligue_show', {'id':club.ligue.id}) }}">{{club.ligue}}</a></td>
+                                <td>
+                                   
+                                    <a href="{{ path('app_club_show', {'id':club.id}) }}" title="Consulter"><button class="btn btn-outline-success"><i data-feather="folder"></i></button></a>
+                                    
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+{% endblock %}

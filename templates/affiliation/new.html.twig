@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Affiliation{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="card card-info">
+                <div class="card-header">
+                    Ajouter une nouvelle demande d'Affiliation
+                </div>
+                <div class="card-body">
+                    {{ include('affiliation/_form.html.twig') }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+   
+{% endblock %}

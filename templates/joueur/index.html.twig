@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Joueur index{% endblock %}
+
+{% block body %}
+    <h1>Joueur index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Prenom</th>
+                <th>Nom</th>
+                <th>DateDeNaissance</th>
+                <th>LieuDenaissance</th>
+                <th>Sexe</th>
+                <th>Nationalite</th>
+                <th>Adresse</th>
+                <th>Telephone</th>
+                <th>Email</th>
+                <th>Numero</th>
+                <th>Photo</th>
+                <th>IsAccepted</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for joueur in joueurs %}
+            <tr>
+                <td>{{ joueur.id }}</td>
+                <td>{{ joueur.prenom }}</td>
+                <td>{{ joueur.nom }}</td>
+                <td>{{ joueur.dateDeNaissance ? joueur.dateDeNaissance|date('Y-m-d') : '' }}</td>
+                <td>{{ joueur.lieuDenaissance }}</td>
+                <td>{{ joueur.sexe }}</td>
+                <td>{{ joueur.nationalite }}</td>
+                <td>{{ joueur.adresse }}</td>
+                <td>{{ joueur.telephone }}</td>
+                <td>{{ joueur.email }}</td>
+                <td>{{ joueur.numero }}</td>
+                <td>{{ joueur.photo }}</td>
+                <td>{{ joueur.isAccepted ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_joueur_show', {'id': joueur.id}) }}">show</a>
+                    <a href="{{ path('app_joueur_edit', {'id': joueur.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="14">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_joueur_new') }}">Create new</a>
+{% endblock %}

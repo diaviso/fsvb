@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Affiliations{% endblock %}
+
+{% block body %}
+   <div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3>Liste des affiliations</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped"  id="dataTableExample" >
+                    <thead>
+                        <tr>
+                            <th>Club</th>
+                            <th>Président</th>
+                            <th>Acceptation</th>
+                            <th>Date</th>
+                            <th>actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for affiliation in affiliations %}
+                        {% if affiliation.saison.id == app.session.get('saison').id %}
+                        
+                        <tr {% if affiliation.isAccepted %} style="background-color:#90EE90;"{% endif %}>
+                            <td>{{ affiliation.club }} ({{ affiliation.club.abreviation }})</td>
+                            <td>{{ affiliation.president }}</td>
+                            <td>{{ affiliation.isAccepted ? 'OUI' : 'NON' }}</td>
+                            <td>{{ affiliation.createdAt ? affiliation.createdAt|date('d/m/Y') : '' }}</td>
+                            <td>                                           
+                                <button class="btn btn-outline-info"><a href="{{ path('app_affiliation_show', {'id': affiliation.id}) }}"  title="Voir" ><span data-feather="eye"></span></a></button>
+                                <button class="btn btn-outline-success">
+                                <a href="{{ path('app_affiliation_accept', {'id': affiliation.id}) }}" title="Acceptation">
+                                 {% if affiliation.isAccepted %}
+                                    <span data-feather="slash"></span>
+                                 {% else %}
+                                    <span data-feather="check-square"></span>
+                                 {% endif %}
+                                </a>
+                                
+                                </button>
+                                {% if affiliation.isAccepted %} 
+                                     <button class="btn btn-outline-primary">
+                                        <a href="{{ path('app_affiliation_bon_de_caisse', {'id': affiliation.id}) }}"  target="_blank"><span data-feather="file"></span></a>
+                                     </button>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endif %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4">Aucun enregistrement trouvé !</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+   </div>
+
+    
+                           
+
+    
+{% endblock %}

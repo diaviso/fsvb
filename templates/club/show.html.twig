@@ -1,0 +1,226 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+        <div class="row">
+          <div class="col-12 grid-margin">
+            <div class="card">
+              <div class="position-relative">
+                <figure class="overflow-hidden mb-0 d-flex justify-content-center">
+                  <img src="{{ asset('uploads/logos/' ~ club.logo) }}" widht="1560" height="280" class="rounded-top" alt="profile cover">
+                </figure>
+                <div class="d-flex justify-content-between align-items-center position-absolute top-90 w-100 px-2 px-md-4 mt-n4">
+                  <div>
+                    <img class="wd-70 rounded-circle" src="{{ asset('uploads/logos/' ~ club.logo) }}" alt="profile">
+                    <span class="h4 ms-3 text-dark">{{club}}&nbsp;({{club.abreviation}})</span>
+                  </div>
+                  <div class="d-none d-md-block">
+                    <a href="{{ path('app_club_edit', {'id':club.id}) }}">
+                      {% for role in app.user.roles %}
+                        {% if role != 'ROLE_ADMIN_LIGUE' %}
+                        <button class="btn btn-primary btn-icon-text">
+                            <i data-feather="edit" class="btn-icon-prepend"></i> Modifier les informations du club
+                        </button>
+                        {% endif %}
+                      {% endfor %}
+                    </a>
+                  </div>
+                </div>
+              </div>
+            
+            </div>
+          </div>
+        </div>
+        <div class="row profile-body">
+        
+          <!-- middle wrapper start -->
+          <div class="col-md-8 col-xl-9 middle-wrapper">
+            <div class="row">
+              <div class="col-md-12 grid-margin">
+                <div class="card rounded">
+                  <div class="card-header">
+                    <div class="d-flex align-items-center justify-content-between">
+                      <div class="d-flex align-items-center">
+                        <img class="img-xs rounded-circle" src="{{ asset('uploads/logos/' ~ club.ligue.logo) }}" alt="">													
+                        <div class="ms-2">
+                          <p><a href="{{path('app_ligue_show', {'id':club.ligue.id}) }}">{{ club.ligue }}</a></p>
+                        </div>
+                      </div>
+                      <div class="dropdown mt-1">
+                      {% for role in app.user.roles %}
+                        {% if role != 'ROLE_ADMIN_LIGUE' %}
+                        <button type="button" class="btn btn-primary float-end mt-n3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Ajouter un joueur
+                        </button>
+                      {% endif %}
+                      {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                      <table class="table table-striped"  id="dataTableExample" >
+                        <thead>
+                            <tr>                
+                                <th>Photo</th> 
+                                <th>Numero</th>
+                              
+                                <th>Prénom</th>
+                                <th>Nom</th>
+                                <th>Date de naissance</th>
+                              
+                                <th>actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <!-- 0 pas de demande | 1 une demande invalide | 2 une demande valide -->
+                        {% for joueur in club.joueurs %}
+                         {% set state = 0 %}
+                         {% set idDemande = 0 %}
+                          {% for renouvellement in joueur.renouvellements %}
+                            {% if renouvellement.saison.id == app.session.get('saison').id %}
+                              {% if renouvellement.valide == false %}
+                                {% set state = 1 %}
+                                {% set idDemande = renouvellement.id %}
+                                {% else %}
+                                  {% set state = 2 %}
+                                  {% set idDemande = renouvellement.id %}
+                              {% endif %}   
+                            {% endif %}
+                          {% endfor %}
+                               <tr {% if state == "1" %}class="bg-warning"{% endif %}{% if state == "2" %}class="bg-success"{% endif %}>
+                                    <td><img src="{{ asset('uploads/photos/' ~ joueur.photo) }}" alt="{{ joueur.nom }}" width="35"/></td>
+                                    <td>{{ joueur.numero }}</td>
+                                    <td>{{ joueur.prenom }}</td>
+                                    <td>{{ joueur.nom }}</td>
+                                    <td>{{ joueur.dateDeNaissance ? joueur.dateDeNaissance|date('d-m-Y') : '' }}</td>
+                                    <td>
+                                    {% for role in app.user.roles %}
+                                      {% if role != 'ROLE_ADMIN_LIGUE' %}
+                                      {% if state=="0" %}
+                                       <a href="{{ path('app_ask_renew', {'id':joueur.id}) }}"><button class="btn btn-outline-secondary" title="demander un renouvellement"><span data-feather="git-pull-request"></span></button></a>
+                                      {% endif %}
+                                      {% if state=="1" %}
+                                        <a href="{{ path('app_validate_renew', {'id':idDemande}) }}"><button class="btn btn-outline-secondary"><span data-feather="check-square"></span></button></a>
+                                      {% endif %}
+                                      {% if state=="2" %}
+                                        <a href="{{ path('app_invalidate_renew', {'id':idDemande}) }}"><button class="btn btn-outline-danger"><span data-feather="slash"></span></button></a>
+                                      {% endif %}
+                                      {% endif %}
+                                    {% endfor %}
+
+                                        <a href="{{ path('app_joueur_show', {'id':joueur.id}) }}" title="Consulter"><button class="btn btn-outline-primary"><i data-feather="eye"></i></button></a>
+                                    </td>
+                                </tr>
+                         
+                               
+                        {% else %}
+                              <tr>
+                                <td colspan="6"><i>Aucun joueur enregistré pour ce club !</i></td>
+                              </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+             
+            </div>
+          </div>
+          <!-- middle wrapper end -->
+          <!-- right wrapper start -->
+          <div class="d-none d-xl-block col-xl-3">
+            <div class="row">
+              <div class="col-md-12 grid-margin">
+                
+              </div>
+              <div class="col-md-12 grid-margin">
+                <div class="card rounded">
+                  <div class="card-body">
+                    <h6 class="card-title">demandes d'affiliation</h6>
+                    <div class="d-flex justify-content-between mb-2 pb-2 border-bottom">
+                    </div>
+                    <div class="d-flex justify-content-between mb-2 pb-2 border-bottom">
+                    {% set has = false %}
+                    {% set aff = null %}
+                    {% for af in club.affiliations %}
+                      {% if af.saison.id == app.session.get('saison').id %}
+                        {% set has = true %}
+                        {% set aff = af %}
+                      {% endif %}                    
+                    {% endfor %}
+                   {% if has %}
+                       <div class="d-flex align-items-center hover-pointer">
+                        <a href="{{ path('app_affiliation_show', {'id':aff.id}) }}">Affiliation {{aff.saison}}</a>
+                      </div>
+                    {% else %}
+                      aucune demande pour cette saison
+                        {% for role in app.user.roles %}
+                          {% if role != 'ROLE_ADMIN_LIGUE' %}
+                      <div class="card rounded">
+                          <div class="d-flex justify-content-between mb-2 pb-2 border-bottom">
+                            <a href="{{ path('app_affiliation_new', {'id':club.id}) }}"><button class="btn btn-success btn-icon-text">
+                              <i data-feather="plus" class="btn-icon-prepend"></i> Ajouter une demande d'affiliation
+                            </button></a>
+                          </div>
+                          <div class="d-flex justify-content-between mb-2 pb-2 border-bottom">
+                            <button class="btn btn-warning btn-icon-text" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+                              <i data-feather="edit" class="btn-icon-prepend"></i> renouveller une demande d'affiliation
+                            </button>
+                          </div>
+                      </div>
+                      {% endif %}
+                      {% endfor %}
+                   {% endif %}
+                   
+                    </div>
+                   
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- right wrapper end -->
+        </div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">AJOUT D'UN NOUVEAU JOUEUR</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
+      </div>
+      <div class="modal-body">
+          {{ include('joueur/_form.html.twig') }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel2">LISTE DES ANCIENNES DEMANDES D'AFFILIATION</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table-striped">
+          {% for affiliation in club.affiliations %}
+            {% if affiliation.saison.id != app.session.get('saison').id %}
+              <tr>
+                <td><li>{{ affiliation.saison }} => <a href="{{ path('app_club_reaffiliation', {'id':affiliation.id}) }}"><i>choisir</i></a></li></td>
+              </tr>
+            {% endif %}
+         {% endfor %}
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

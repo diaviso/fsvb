@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Club index{% endblock %}
+
+{% block body %}
+      <div class="card">
+            <div class="card-header">
+                <h4>LISTE DES LICENCES</h4>
+            </div>
+            <div class="card-body">
+
+                <table class="table table-stripped"  id="dataTableExample" >
+                    <thead>
+                        <tr>
+                            <th>Ligue</th>
+                            <th>Club (abrev)</th>
+                            <th>Joueur</th>
+                            <th>Valide</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for licence in licences %}
+                            {% if licence.saison.id == app.session.get('saison').id %}
+                            <tr>
+                                <td><a href="{{ path('app_ligue_show', {'id':licence.joueur.club.ligue.id}) }}">{{ licence.joueur.club.ligue }}</a></td>
+                                <td><a href="{{ path('app_club_show', {'id':licence.joueur.club.id}) }}">{{ licence.joueur.club }}</a></td>
+                                <td><a href="{{ path('app_joueur_show', {'id':licence.joueur.id}) }}">{{ licence.joueur }}</a></td>
+                                <td>{{ licence.valide ? 'Oui' : 'Non'  }}</td>
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+{% endblock %}

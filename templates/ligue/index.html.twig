@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ligue index{% endblock %}
+
+{% block body %}
+            <div class="card">
+                <div class="card-header">
+                    <h3>LISTE DES LIGUES</h3>
+                   
+                </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table id="dataTableExample" class="table">
+                    <thead>
+                      <tr>
+                        <th>Logo</th>
+                        <th>Nom</th>
+                        <th>Président</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for ligue in ligues %}
+                        <tr>
+                            <td><img src="{{ asset('uploads/logos/' ~ ligue.logo) }}" alt="{{ ligue.nom }}" width="35"/></td>
+                            <td>{{ ligue.nom }}</td>
+                            <td>{{ ligue.president }}</td>
+                            <td>
+                                <a href="{{ path('app_ligue_show', {'id':ligue.id}) }}" title="Consulter"><button class="btn btn-outline-success"><i data-feather="folder"></i></button></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    
+                     
+                    </tbody>
+                  </table>
+                </div>
+                
+              </div> 
+            </div>
+{% endblock %}

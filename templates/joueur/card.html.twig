@@ -1,0 +1,91 @@
+<style type="text/css">
+	table {
+		width: 100%;
+	}
+
+    img {
+           
+            border: 2px solid red;
+            border-radius: 200px;
+            vertical-align: middle;
+        }
+
+</style>
+
+<page backimg="{{ imageBG }}">
+    <br>
+    <div>
+        <div style="display:inline; width:30%; height: 105;">
+            <img src="{{profil}}" alt="" width="100" height="100"  style="display:inline;">
+        </div>
+        <div style="margin-left:0.5%; margin-top:75; display:inline; width:65%; height: 30;">
+            <font style="color:#016599; font-size:14;font-weight:bold; text-align: center;">{{ joueur.prenom }}</font>   
+            <font style="color:#016599; font-size:14;font-weight:bold; text-align: center;">{{ joueur.nom }}</font>   
+        </div>
+       
+    </div>
+    <br>
+    <div>
+   
+        <div style="width: 23%; height: 40; display:inline">
+            <table style="font-size: 10;">
+                
+                <tr style="color:#016599;">
+                    <th>N° : </th>
+                </tr>
+                <tr>
+                    <th>{{ joueur.numero }}</th>
+                </tr>
+                <tr style="color:#016599;">
+                    <th>delivrée : </th>
+                </tr>
+                <tr> 
+                    <th>{{ date|date('d/m/Y') }}</th>
+                </tr>
+                <tr style="color:#016599;">
+                    <th>Catégorie : </th>
+                </tr>
+                <tr>
+                    <th>{{ joueur.categorie.nom }}</th>
+                </tr>
+            
+            </table>
+    
+        </div>
+        <div style="width: 20%; height: 40; display:inline; margin-left:3%;">
+            <qrcode value="https://www.licence.senegalvolleyball.sn/joueurcard/{{joueur.id}}" style="width: 100%; color: #000000"></qrcode>
+        </div>
+        <div style="width: 50%; height: 40; display:inline; margin-left:5%;">
+            
+            <table style="margin-top : -78px;font-size: 10;">
+                
+                <tr>
+                    <th style="color:#016599;">club : </th>
+                    <td><b>{{ joueur.club.abreviation }}</b></td>
+                </tr>
+                <tr>
+                    <th style="color:#016599;">N&eacute;(e) le : </th>
+                    <td><b>{{ joueur.dateDeNaissance|date('d/m/Y') }}</b></td>
+                </tr>
+                <tr>
+                    <th style="color:#016599;">&aacute; : </th>
+                    <td><b>{{ joueur.lieuDeNaissance }}</b></td>
+                </tr>
+                <tr>
+                    <th style="color:#016599;">Sexe : </th>
+                    <td><b>{{ joueur.sexe }}</b></td>
+                </tr>
+                <tr>
+                    <th style="color:#016599;">Nationalité : </th>
+                    <td><b>{{ joueur.nationalite }}</b></td>
+                </tr>
+               
+            </table>
+    
+        </div>
+
+    </div>
+    <hr>
+   <div style="font-size: 8; text-align: center;">
+   </div>
+</page>

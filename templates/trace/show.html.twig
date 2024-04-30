@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Trace{% endblock %}
+
+{% block body %}
+    <h1>Trace</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ trace.id }}</td>
+            </tr>
+            <tr>
+                <th>Action</th>
+                <td>{{ trace.action }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ trace.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_trace_index') }}">back to list</a>
+
+    <a href="{{ path('app_trace_edit', {'id': trace.id}) }}">edit</a>
+
+    {{ include('trace/_delete_form.html.twig') }}
+{% endblock %}

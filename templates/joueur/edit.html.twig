@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Joueur{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-3"><a href="{{ path('app_joueur_show', {'id':joueur.id}) }}"><button class="btn btn-info">Retourner au joueur</button></a></div>
+        <div class="col-md-6">
+            <div class="card-header">
+                <h3>Modification de joueur</h3>
+            </div>
+           <div class="card">
+                <div class="card-body">
+                    {{ include('joueur/_form.html.twig', {'button_label': 'ENREGISTRER LES MOFIFICATIONS'}) }}
+                </div>
+           </div>
+        </div>
+    </div>
+   
+
+    
+
+{% endblock %}

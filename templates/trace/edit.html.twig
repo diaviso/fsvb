@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Trace{% endblock %}
+
+{% block body %}
+    <h1>Edit Trace</h1>
+
+    {{ include('trace/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_trace_index') }}">back to list</a>
+
+    {{ include('trace/_delete_form.html.twig') }}
+{% endblock %}

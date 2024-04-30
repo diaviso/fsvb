@@ -1,0 +1,133 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Affiliations{% endblock %}
+
+{% block body %}
+   
+    <div class="row">
+        <div class="col-md-6">
+           <div class="card">
+            <div class="card-header">
+                <h3>{{ affiliation.club }}</h3>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                       
+                        <tr>
+                            <th>Est validé ?</th>
+                            <td>{{ affiliation.isAccepted ? 'Oui' : 'Non' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Créé le </th>
+                            <td>{{ affiliation.createdAt ? affiliation.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Siège Social Du Club</th>
+                            <td>{{ affiliation.siegeSocialDuClub }}</td>
+                        </tr>
+                        <tr>
+                            <th>Adresse Du Club</th>
+                            <td>{{ affiliation.adresseDuClub }}</td>
+                        </tr>
+                        <tr>
+                            <th>Téléphone</th>
+                            <td>{{ affiliation.telephone }}</td>
+                        </tr>
+                        <tr>
+                            <th>Fax</th>
+                            <td>{{ affiliation.fax }}</td>
+                        </tr>
+                        <tr>
+                            <th>Couleurs</th>
+                            <td>{{ affiliation.couleurs }}</td>
+                        </tr>
+                        <tr>
+                            <th>Mail Officiel</th>
+                            <td>{{ affiliation.mailOfficiel }}</td>
+                        </tr>
+                        <tr>
+                            <th>Terrains</th>
+                            <td>{{ affiliation.terrains }}</td>
+                        </tr>
+                        <tr>
+                            <th>Préfecture</th>
+                            <td>{{ affiliation.prefecture }}</td>
+                        </tr>
+                        <tr>
+                            <th>Date De Déclaration</th>
+                            <td>{{ affiliation.dateDeDeclation ? affiliation.dateDeDeclation|date('d-m-Y') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Président</th>
+                            <td>{{ affiliation.president }}</td>
+                        </tr>
+                        <tr>
+                            <th>Premier Vice Président</th>
+                            <td>{{ affiliation.premiervicePresident }}</td>
+                        </tr>
+                        <tr>
+                            <th>Deuxième Vice Président</th>
+                            <td>{{ affiliation.deuxiemeVidePresident }}</td>
+                        </tr>
+                        <tr>
+                            <th>Secretaire Général</th>
+                            <td>{{ affiliation.secretaireGeneral }}</td>
+                        </tr>
+                        <tr>
+                            <th>Tresorier Général</th>
+                            <td>{{ affiliation.TresorierGeneral }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+           </div>
+        </div>
+        <div class="col-md-6 card">
+            <button type="button" class="btn btn-outline-facebook float-end mt-n3 mt-4 m-1" data-bs-toggle="modal" data-bs-target="#exampleModal">
+               + Ajouter un document
+            </button>
+            <table class="table table-striped"  id="dataTableExample" >
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Type</th>
+                        <th>Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for document in affiliation.documents %}
+                        <tr>
+                            <td>{{ document.nom|slice(0, 40) }}...</td>
+                            <td>{{ document.type }}</td>
+                            <td>
+                                
+                                            
+                                <a href="{{ asset('uploads/documents/' ~ document.nom) }}" target="_blank" title="Consulter"><button class="btn btn-outline-success"><i data-feather="folder"></i></button></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">AJOUT D'UN NOUVEAU CLUB</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
+            </div>
+            <div class="modal-body">
+                {{ include('document/_form.html.twig') }}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+   
+{% endblock %}
